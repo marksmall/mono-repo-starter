@@ -1,3 +1,4 @@
-import { createServicesViteConfig } from '@dsp-toolkit/shared-config/vite';
+import { createSimpleLibraryViteConfig } from '@dsp-toolkit/shared-config/vite';
 
-export default createServicesViteConfig(import.meta.url);
+// TODO: switch back to createServicesViteConfig after source migration from agrimetrics-services-lib.
+export default createSimpleLibraryViteConfig(import.meta.url);
