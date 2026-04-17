@@ -1,0 +1,27 @@
+{
+  "name": "@dsp-toolkit/shared-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.12.0"
+  },
+  "description": "Shared build and quality config for DSP Toolkit packages",
+  "exports": {
+    "./eslint": "./eslint.config.ts",
+    "./prettier": "./prettier.config.ts",
+    "./release": "./release.config.ts",
+    "./vite": "./vite.config.ts",
+    "./vitest": "./vitest.config.ts"
+  },
+  "devDependencies": {
+    "@tpzdsp/eslint-config-dsp": "^4.0.0",
+    "@vitest/eslint-plugin": "^1.6.15",
+    "eslint-plugin-no-only-tests": "^3.3.0",
+    "prettier": "^3.8.1",
+    "semantic-release": "^25.0.2",
+    "vite": "^8.0.8",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^4.1.2"
+  }
+}

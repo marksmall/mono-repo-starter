@@ -1,0 +1,25 @@
+{
+  "indent": "  ",
+  "semverRange": "^",
+  "sortFirst": [
+    "name",
+    "version",
+    "private",
+    "type",
+    "engines",
+    "scripts",
+    "dependencies",
+    "devDependencies",
+    "peerDependencies"
+  ],
+  "source": ["package.json", "packages/*/package.json"],
+  "versionGroups": [
+    {
+      "label": "Use workspace protocol for local packages",
+      "packages": ["**"],
+      "dependencies": ["@dsp-toolkit/*"],
+      "dependencyTypes": ["dev", "prod"],
+      "pinVersion": "workspace:*"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "name": "dsp-toolkit",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.28.2",
+  "engines": {
+    "node": ">=24.12.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "postinstall": "if [ \"$CI\" != \"true\" ] && [ -d .git ] && [ -f ./postinstall.sh ]; then ./postinstall.sh; fi",
+    "build": "turbo build",
+    "typecheck": "turbo typecheck",
+    "lint": "turbo lint",
+    "lint:fix": "turbo lint:fix",
+    "format": "turbo format",
+    "format:check": "turbo format:check",
+    "test": "turbo test",
+    "test:ci": "turbo test:ci",
+    "quality:ci": "turbo quality:ci",
+    "release": "turbo release",
+    "clean": "turbo clean",
+    "clean:all": "turbo clean && rm -rf node_modules .turbo packages/*/node_modules",
+    "syncpack:list": "syncpack list-mismatches",
+    "syncpack:fix": "syncpack fix-mismatches",
+    "syncpack:lint": "syncpack lint"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "knip": "^5.88.1",
+    "prettier": "^3.8.1",
+    "syncpack": "^13.0.4",
+    "turbo": "^2.5.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "jiti": "^2.0.0"
+    }
+  }
+}
