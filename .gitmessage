@@ -5,13 +5,7 @@ Describe why you did what you did (limit each line to 80 characters)
 IssueID #
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Types: feat | fix | docs | style | refactor | perf | test | build | ci | chore
+# Types: feat | fix | docs
 #
-# Scopes:
-#   Apps:     water-quality | wetlands | ecology-and-fish
-#   Shared:   shared | typescript-config
-#   Infra:    devops | ci | docker
-#
-# Feature scopes (append to app): layout | map | observations | sampling-points
-#   Example: feat(water-quality/map): add new layer toggle
+# Scopes: project | tests | devops
 # ─────────────────────────────────────────────────────────────────────────────
