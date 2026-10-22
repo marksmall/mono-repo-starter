@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "pnpm@10.28.2",
   "engines": {
-    "node": ">=24.12.0",
+    "node": "24.22.1",
     "pnpm": ">=10.0.0"
   },
   "scripts": {
@@ -20,7 +20,7 @@
     "format:check": "turbo format:check",
     "test": "turbo test",
     "test:ci": "turbo test:ci",
-    "quality:ci": "turbo lint format:check typecheck test:ci build",
+    "quality:ci": "pnpm run check:versions && turbo lint format:check typecheck test:ci build",
     "quality:ci:changed": "turbo lint format:check typecheck test:ci build --filter=[origin/main...HEAD]",
     "quality:ci:services": "pnpm run quality:ci -- --filter=@agrimetrics/services",
     "quality:ci:events": "pnpm run quality:ci -- --filter=@agrimetrics/agrieventlib",
@@ -34,7 +34,8 @@
     "unused:code": "knip",
     "syncpack:list": "syncpack list-mismatches",
     "syncpack:fix": "syncpack fix-mismatches",
-    "syncpack:lint": "syncpack lint"
+    "syncpack:lint": "syncpack lint",
+    "check:versions": "node scripts/check-versions.mjs"
   },
   "devDependencies": {
     "husky": "^9.1.7",
