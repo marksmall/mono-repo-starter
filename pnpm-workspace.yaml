@@ -1,2 +1,8 @@
 packages:
   - 'packages/*'
+
+# Our own packages are released by us, so they skip pnpm's 24-hour release-age wait;
+# every third-party package keeps it (protection against compromised npm releases).
+minimumReleaseAgeExclude:
+  - '@tpzdsp/*'
+  - '@agrimetrics/*'
