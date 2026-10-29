@@ -1,0 +1,9 @@
+{
+  // Fail on high and critical vulnerabilities only.
+  // Moderate is too noisy for a pre-push gate; triage those separately.
+  "high": true,
+  "critical": true,
+  // Add GHSA advisory IDs here to suppress known false-positives that have
+  // been reviewed and accepted. Document the reason next to each entry.
+  "allowlist": []
+}

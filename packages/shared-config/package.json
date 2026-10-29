@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=24.12.0"
+    "node": ">=24.22.1"
   },
   "description": "Shared build and quality config for DSP Toolkit packages",
   "exports": {
@@ -15,13 +15,13 @@
     "./vitest": "./vitest.config.ts"
   },
   "devDependencies": {
-    "@tpzdsp/eslint-config-dsp": "^4.0.0",
-    "@vitest/eslint-plugin": "^1.6.15",
-    "eslint-plugin-no-only-tests": "^3.3.0",
-    "prettier": "^3.8.1",
-    "semantic-release": "^25.0.2",
-    "vite": "^8.0.8",
+    "@tpzdsp/eslint-config-dsp": "^4.0.3",
+    "@vitest/eslint-plugin": "^1.6.28",
+    "eslint-plugin-no-only-tests": "^3.4.0",
+    "prettier": "^3.9.10",
+    "semantic-release": "^25.0.9",
+    "vite": "^8.3.5",
     "vite-plugin-dts": "^4.5.4",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.12"
   }
 }

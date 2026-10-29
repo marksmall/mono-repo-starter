@@ -4,7 +4,7 @@
   "private": false,
   "type": "module",
   "engines": {
-    "node": ">=24.12.0"
+    "node": ">=24.22.1"
   },
   "description": "Agrimetrics Eventing Library — DSP Toolkit",
   "sideEffects": false,
@@ -36,37 +36,37 @@
     "quality:ci": "npm run lint && npm run format:check && npm run typecheck && npm run test:ci && npm run build"
   },
   "dependencies": {
-    "@agrimetrics/agrilib": "^5.0.0",
+    "@agrimetrics/agrilib": "^5.2.0",
     "@types/log4js": "^2.3.5",
-    "@types/uuid": "^9.0.0",
-    "applicationinsights": "^2.4.1",
-    "async-wait-until": "^2.0.12",
-    "kafkajs": "^2.2.3",
-    "log4js": "^6.5.2",
+    "@types/uuid": "^9.0.8",
+    "applicationinsights": "^2.9.8",
+    "async-wait-until": "^2.0.31",
+    "kafkajs": "^2.2.4",
+    "log4js": "^6.9.1",
     "perf_hooks": "0.0.1",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@dsp-toolkit/shared-config": "workspace:*",
     "@dsp-toolkit/typescript-config": "workspace:*",
-    "@tpzdsp/eslint-config-dsp": "^4.0.0",
-    "@types/node": "^24.12.2",
-    "@types/sinon": "^17.0.0",
-    "@types/sinon-chai": "^4.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.58.0",
-    "@typescript-eslint/parser": "^8.58.0",
-    "@vitest/coverage-istanbul": "^4.1.2",
-    "eslint": "^9.39.4",
-    "prettier": "^3.8.1",
-    "semantic-release": "^25.0.2",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^12.0.2",
-    "sinon": "^19.0.0",
-    "typescript": "^6.0.2",
-    "vite": "^8.0.8",
+    "@semantic-release/github": "^12.0.10",
+    "@tpzdsp/eslint-config-dsp": "^4.0.3",
+    "@types/node": "^24.19.2",
+    "@types/sinon": "^17.0.4",
+    "@types/sinon-chai": "^4.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.72.1",
+    "@typescript-eslint/parser": "^8.72.1",
+    "@vitest/coverage-istanbul": "^4.1.12",
+    "eslint": "^9.39.5",
+    "prettier": "^3.9.10",
+    "semantic-release": "^25.0.9",
+    "sinon": "^19.0.5",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.5",
     "vite-plugin-dts": "^4.5.4",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.12"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"

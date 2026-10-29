@@ -1,11 +1,5 @@
-type(scope): description (limit to 50 characters)
+feat|fix|docs(project|devops|services|events|types|shared-config|typescript-config): Some Title text (limit to 50 characters)
 
 Describe why you did what you did (limit each line to 80 characters)
 
 IssueID #
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Types: feat | fix | docs
-#
-# Scopes: project | tests | devops
-# ─────────────────────────────────────────────────────────────────────────────
