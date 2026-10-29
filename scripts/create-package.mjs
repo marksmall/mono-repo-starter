@@ -9,6 +9,9 @@ const ROOT_PACKAGE_JSON = resolve(ROOT_DIR, 'package.json');
 
 const DEFAULT_SCOPE = '@agrimetrics';
 
+// Published packages state a minimum Node of the version pinned in .tool-versions
+const NODE_VERSION = readFileSync(resolve(ROOT_DIR, '.tool-versions'), 'utf8').match(/^nodejs\s+(\S+)/m)[1];
+
 const toKebabCase = (value) =>
   value
     .trim()
@@ -49,7 +52,7 @@ const packageJsonTemplate = ({ packageName, directoryName }) => `{
   "private": false,
   "type": "module",
   "engines": {
-    "node": ">=24.12.0"
+    "node": ">=${NODE_VERSION}"
   },
   "description": "${directoryName} package — DSP Toolkit",
   "sideEffects": false,
@@ -72,8 +75,8 @@ const packageJsonTemplate = ({ packageName, directoryName }) => `{
     "typecheck": "tsc --noEmit",
     "lint": "eslint './src/**/*.{js,ts}'",
     "lint:fix": "eslint './src/**/*.{js,ts}' --fix",
-    "format": "prettier --write \"./src/**/*.{ts,json}\"",
-    "format:check": "prettier --check \"./src/**/*.{ts,json}\"",
+    "format": "prettier --write './src/**/*.{ts,json}'",
+    "format:check": "prettier --check './src/**/*.{ts,json}'",
     "test": "vitest",
     "test:ci": "vitest run --passWithNoTests",
     "release": "semantic-release",
@@ -82,20 +85,20 @@ const packageJsonTemplate = ({ packageName, directoryName }) => `{
   "devDependencies": {
     "@dsp-toolkit/shared-config": "workspace:*",
     "@dsp-toolkit/typescript-config": "workspace:*",
-    "@tpzdsp/eslint-config-dsp": "^4.0.0",
-    "@types/node": "^24.12.2",
-    "@typescript-eslint/eslint-plugin": "^8.58.0",
-    "@typescript-eslint/parser": "^8.58.0",
-    "eslint": "^9.39.4",
-    "prettier": "^3.8.1",
-    "semantic-release": "^25.0.2",
+    "@tpzdsp/eslint-config-dsp": "^4.0.3",
+    "@types/node": "^24.19.2",
+    "@typescript-eslint/eslint-plugin": "^8.72.1",
+    "@typescript-eslint/parser": "^8.72.1",
+    "eslint": "^9.39.5",
+    "prettier": "^3.9.10",
+    "semantic-release": "^25.0.9",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^12.0.2",
-    "typescript": "^6.0.2",
-    "vite": "^8.0.8",
+    "@semantic-release/github": "^12.0.10",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.5",
     "vite-plugin-dts": "^4.5.4",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.12"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"

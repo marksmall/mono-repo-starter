@@ -74,7 +74,7 @@
     "README.md"
   ],
   "engines": {
-    "node": ">=24.12.0"
+    "node": ">=24.22.1"
   },
   "scripts": {
     "clean": "rm -rf dist",
@@ -94,7 +94,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "peerDependencies": {
-    "notifications-node-client": "^8.2.1"
+    "notifications-node-client": "^8.5.0"
   },
   "peerDependenciesMeta": {
     "notifications-node-client": {
@@ -102,34 +102,34 @@
     }
   },
   "dependencies": {
-    "@types/geojson": "^7946.0.10",
-    "fast-xml-parser": "^5.3.5",
+    "@types/geojson": "^7946.0.16",
+    "fast-xml-parser": "^5.11.2",
     "geojson": "^0.5.0"
   },
   "devDependencies": {
     "@dsp-toolkit/shared-config": "workspace:*",
     "@dsp-toolkit/typescript-config": "workspace:*",
-    "@tpzdsp/eslint-config-dsp": "^4.0.0",
-    "@types/node": "^24.12.2",
-    "@typescript-eslint/eslint-plugin": "^8.58.0",
-    "@typescript-eslint/parser": "^8.58.0",
-    "@vitest/coverage-istanbul": "^4.1.2",
-    "@vitest/eslint-plugin": "^1.6.15",
-    "eslint": "^9.39.4",
-    "eslint-plugin-no-only-tests": "^3.3.0",
-    "husky": "^9.0.7",
-    "knip": "^6.3.0",
-    "msw": "^2.12.14",
-    "notifications-node-client": "^8.2.1",
-    "prettier": "^3.8.1",
-    "semantic-release": "^25.0.2",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^12.0.2",
+    "@semantic-release/github": "^12.0.10",
     "@testing-library/jest-dom": "^6.9.1",
-    "typescript": "^6.0.2",
-    "vite": "^8.0.8",
+    "@tpzdsp/eslint-config-dsp": "^4.0.3",
+    "@types/node": "^24.19.2",
+    "@typescript-eslint/eslint-plugin": "^8.72.1",
+    "@typescript-eslint/parser": "^8.72.1",
+    "@vitest/coverage-istanbul": "^4.1.12",
+    "@vitest/eslint-plugin": "^1.6.28",
+    "eslint": "^9.39.5",
+    "eslint-plugin-no-only-tests": "^3.4.0",
+    "husky": "^9.1.7",
+    "knip": "^6.43.0",
+    "msw": "^2.15.0",
+    "notifications-node-client": "^8.5.0",
+    "prettier": "^3.9.10",
+    "semantic-release": "^25.0.9",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.5",
     "vite-plugin-dts": "^4.5.4",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.12"
   }
 }

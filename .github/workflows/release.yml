@@ -57,21 +57,20 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      # Node and pnpm versions both come from .tool-versions
+      - uses: agrimetrics/actions-dsp3/setup-node@v1
         with:
-          node-version-file: .tool-versions
-          cache: 'pnpm'
+          package-manager: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          # The committed .npmrc reads the @agrimetrics registry token from this
+          GITHUB_PACKAGES_TOKEN: ${{ secrets.AGM_GITHUB_PACKAGES_TOKEN }}
 
       - name: Run package quality gate
         run: pnpm run quality:ci:${{ matrix.package }}

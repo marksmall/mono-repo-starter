@@ -2,7 +2,7 @@
 
 [![Turborepo](https://img.shields.io/badge/built%20with-Turborepo-blueviolet.svg)](https://turbo.build/repo)
 [![pnpm](https://img.shields.io/badge/maintained%20with-pnpm-cc00ff.svg)](https://pnpm.io/)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D24.12.0-brightgreen.svg)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/node-24.22.1-brightgreen.svg)](https://nodejs.org/)
 
 A Turborepo monorepo containing reusable DSP libraries.
 
@@ -20,10 +20,12 @@ A Turborepo monorepo containing reusable DSP libraries.
 
 ### Prerequisites
 
-- Node.js >= 24.12.0
-- pnpm >= 10.0.0
-
-You can use `.tool-versions` as the source of truth for local runtime setup.
+- **Node and pnpm** at the versions in [`.tool-versions`](.tool-versions), the single
+  source of truth: mise or asdf pick them up automatically, and `pnpm run check:versions`
+  fails if anything drifts from it (published packages state `engines.node` as `>=` it).
+- **A GitHub token with `read:packages`** in `GITHUB_PACKAGES_TOKEN`, for the private
+  `@agrimetrics/*` packages: the committed [`.npmrc`](.npmrc) reads it from the
+  environment.
 
 ### Installation
 
@@ -40,7 +42,7 @@ pnpm run bootstrap:check
 ```
 
 The command:
-- Validates local Node.js and pnpm versions
+- Checks the running Node.js and pnpm against `.tool-versions` (`check:versions`)
 - Installs dependencies with a frozen lockfile
 - Runs the full monorepo quality gate
 
@@ -52,7 +54,9 @@ The command:
 pnpm run quality:ci
 ```
 
-Runs lint, format check, typecheck, tests, and build across all applicable packages.
+Runs `check:versions` and `security:audit` (audit-ci, high and critical only), then lint,
+format check, typecheck, tests, and build across all applicable packages. The pre-push
+hook runs it.
 
 ### Changed-Only Quality Gate
 
@@ -60,7 +64,8 @@ Runs lint, format check, typecheck, tests, and build across all applicable packa
 pnpm run quality:ci:changed
 ```
 
-Runs the same quality tasks, but only for packages affected by changes between `origin/main...HEAD`.
+Runs the same checks, with the Turbo tasks limited to packages affected by changes
+between `origin/main...HEAD`.
 
 ### Package-Scoped Quality Gates
 
@@ -88,7 +93,9 @@ All scripts are run from repo root with `pnpm <script>`.
 | `format:check` | Verify formatting without changes |
 | `test` | Run Vitest in dev/watch mode where applicable |
 | `test:ci` | Run Vitest in CI mode |
-| `quality:ci` | Full quality facade: lint + format check + typecheck + test + build |
+| `check:versions` | Check Node/pnpm and `engines` against `.tool-versions` |
+| `security:audit` | audit-ci: fail on high and critical advisories |
+| `quality:ci` | Full quality facade: check:versions + security:audit + lint + format check + typecheck + test + build |
 | `quality:ci:changed` | Full quality facade scoped to changed packages |
 | `quality:ci:services` | Full quality facade scoped to services package |
 | `quality:ci:events` | Full quality facade scoped to events package |
@@ -115,6 +122,54 @@ All scripts are run from repo root with `pnpm <script>`.
 | `syncpack:list` | List dependency version mismatches |
 | `syncpack:fix` | Auto-fix dependency version mismatches |
 | `syncpack:lint` | Run syncpack lint checks |
+
+## Advisory checking
+
+Dependencies are checked for known vulnerabilities by
+[audit-ci](https://github.com/IBM/audit-ci) (`pnpm run security:audit`), at high and
+critical only, as part of every quality gate. Reviewed exceptions go in
+[`audit-ci.jsonc`](audit-ci.jsonc)'s `allowlist`, each with a comment giving the reason;
+it's currently empty.
+
+To fix a vulnerable package, update it, or the direct dependency that pulls it in, within
+its version range (`pnpm update -r`). If a transitive package can only be forced to a
+fixed release, add an entry to `overrides` in `pnpm-workspace.yaml` pinning the **fixed**
+version, and revisit it later.
+
+## Git hooks and commit convention
+
+`pnpm install` runs the `prepare` script (skipped when `CI=true`), which installs the
+[Husky](https://typicode.github.io/husky/) hooks and sets `.gitmessage` as this repo's
+`commit.template`:
+
+- **commit-msg** runs [commitlint](https://commitlint.js.org/). The allowed types and
+  scopes come from the first line of [`.gitmessage`](.gitmessage) (`feat|fix|docs`, and
+  scopes `project`, `devops` and the package folders: `services`, `events`, `types`,
+  `shared-config`, `typescript-config`), and every commit needs a body. Mark breaking
+  changes with a `BREAKING CHANGE:` footer; the `feat!:` shorthand is rejected. Commit
+  types drive the version semantic-release picks for each package.
+- **pre-push** runs `pnpm run quality:ci`.
+
+Check the hooks work:
+
+```sh
+git config core.hooksPath     # .husky/_
+# Should be rejected — wrong type
+printf 'chore(devops): x\n\nlong enough body text here\n' | pnpm exec commitlint
+# Should be rejected — missing body
+echo "fix(devops): x" | pnpm exec commitlint
+# Should be rejected — the ! shorthand; spell it out in a BREAKING CHANGE: footer
+printf 'fix(devops)!: x\n\nlong enough body text here\n' | pnpm exec commitlint
+# Should pass
+printf 'fix(devops): x\n\nlong enough body text here\n' | pnpm exec commitlint
+```
+
+## Dead code analysis (knip)
+
+`pnpm run unused:code` runs [knip](https://knip.dev). It isn't part of the quality gates:
+findings are a tidy-up list. Until each package's source is migrated in (see
+[Notes](#notes)), knip reports most of their declared dependencies as unused; that's
+expected, and they shouldn't be removed, since the migrated code uses them.
 
 ## CI and Release Workflows
 
@@ -188,3 +243,6 @@ dsp-toolkit/
 - Root and package configs are TypeScript-first (`*.ts`) for consistency.
 - Root quality scripts are the single source of truth for all gates.
 - Husky pre-push runs the root quality facade to avoid drift from CI.
+- The package sources are placeholders until migrated: each `packages/*/src/index.ts`
+  gives the `cp` command to bring in the original library. `@agrimetrics/service-event-types`
+  declares zod 4, as the original does from 11.0.0.

@@ -4,7 +4,8 @@
 // package manager version, if pinned there). Fails if anything disagrees with it:
 //   - the pin itself isn't an exact x.y.z version
 //   - the running Node (or pnpm) isn't the pinned version
-//   - package.json engines / packageManager don't match the pin exactly
+//   - package.json engines / packageManager don't match the pin (apps: exactly;
+//     published libraries, i.e. with publishConfig: ">=" the pin)
 //   - a Dockerfile hardcodes a Node version instead of taking ARG NODE_VERSION
 // Run from the repo root; quality:ci runs it, so CI and the pre-push hook do too.
 // Dockerfiles deliberately not converted yet go in package.json under
@@ -25,12 +26,19 @@ const toolVersions = Object.fromEntries(
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 const ignoredDockerfiles = new Set(pkg.checkVersions?.ignoredDockerfiles ?? []);
 
+/** @type {string[]} */
 const errors = [];
 
+/** @param {string} message */
 const ok = (message) => {
   console.log(`  OK  ${message}`);
 };
 
+/**
+ * @param {string} label
+ * @param {string | undefined} actual
+ * @param {string | undefined} expected
+ */
 const expectEqual = (label, actual, expected) => {
   if (actual === expected) {
     ok(`${label}: ${actual}`);
@@ -55,8 +63,16 @@ if (!node) {
 // The Node running this script (mise/asdf locally, setup-node in CI).
 expectEqual('running Node', process.version.replace(/^v/, ''), node);
 
-// engines.node is informational, but must still state the exact pinned version.
-expectEqual('package.json engines.node', pkg.engines?.node?.trim(), node);
+const enginesNode = pkg.engines?.node?.trim();
+
+// Apps pin engines.node to the exact version. A published library is checked against the
+// consuming app's Node, so it states a minimum instead: exactly ">=" the pinned version, so
+// the floor moves with every security bump and nothing older is accepted.
+if (pkg.publishConfig) {
+  expectEqual('package.json engines.node (library minimum)', enginesNode, `>=${node}`);
+} else {
+  expectEqual('package.json engines.node', enginesNode, node);
+}
 
 // Package managers are only checked when .tool-versions pins them.
 for (const manager of ['pnpm', 'yarn']) {
@@ -74,8 +90,13 @@ for (const manager of ['pnpm', 'yarn']) {
     expectEqual(`running ${manager}`, running, pinned);
   }
 
+  // Same rule as engines.node: exact for apps, ">=" the pin for published libraries.
   if (pkg.engines?.[manager]) {
-    expectEqual(`package.json engines.${manager}`, pkg.engines[manager].trim(), pinned);
+    expectEqual(
+      `package.json engines.${manager}`,
+      pkg.engines[manager].trim(),
+      pkg.publishConfig ? `>=${pinned}` : pinned,
+    );
   }
 
   if (pkg.packageManager?.startsWith(`${manager}@`)) {
@@ -86,6 +107,10 @@ for (const manager of ['pnpm', 'yarn']) {
 }
 
 // Every Dockerfile must take Node from the build arg, which CI fills from .tool-versions.
+/**
+ * @param {string} dir
+ * @returns {string[]}
+ */
 const findDockerfiles = (dir) =>
   readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     if (entry.isDirectory()) {
