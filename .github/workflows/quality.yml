@@ -26,11 +26,16 @@ jobs:
         with:
           package-manager: pnpm
 
+      - name: Configure GitHub Packages registry auth
+        # pnpm 11 won't expand env vars in a repo-committed .npmrc (anti-supply-chain-attack
+        # protection), so the token goes in the runner's user-level ~/.npmrc instead; the
+        # committed .npmrc keeps only the @agrimetrics scope.
+        run: echo "//npm.pkg.github.com/:_authToken=${AGM_GITHUB_PACKAGES_TOKEN}" >> ~/.npmrc
+        env:
+          AGM_GITHUB_PACKAGES_TOKEN: ${{ secrets.AGM_GITHUB_PACKAGES_TOKEN }}
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        env:
-          # The committed .npmrc reads the @agrimetrics registry token from this
-          GITHUB_PACKAGES_TOKEN: ${{ secrets.AGM_GITHUB_PACKAGES_TOKEN }}
 
       - name: Refresh origin main reference
         run: git fetch origin main:refs/remotes/origin/main
@@ -51,11 +56,16 @@ jobs:
         with:
           package-manager: pnpm
 
+      - name: Configure GitHub Packages registry auth
+        # pnpm 11 won't expand env vars in a repo-committed .npmrc (anti-supply-chain-attack
+        # protection), so the token goes in the runner's user-level ~/.npmrc instead; the
+        # committed .npmrc keeps only the @agrimetrics scope.
+        run: echo "//npm.pkg.github.com/:_authToken=${AGM_GITHUB_PACKAGES_TOKEN}" >> ~/.npmrc
+        env:
+          AGM_GITHUB_PACKAGES_TOKEN: ${{ secrets.AGM_GITHUB_PACKAGES_TOKEN }}
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        env:
-          # The committed .npmrc reads the @agrimetrics registry token from this
-          GITHUB_PACKAGES_TOKEN: ${{ secrets.AGM_GITHUB_PACKAGES_TOKEN }}
 
       - name: Run quality pipeline
         run: pnpm run quality:ci

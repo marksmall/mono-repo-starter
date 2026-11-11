@@ -1,8 +1,20 @@
 packages:
   - 'packages/*'
 
+allowBuilds:
+  # Its postinstall is the package's own dev hook (git config commit.template), published by
+  # mistake: as a dependency it would point this repo's commit template at its file.
+  '@tpzdsp/eslint-config-dsp': false
+  msw: true
+  unrs-resolver: true
+
+# Moved from package.json's "pnpm" field, which pnpm 11 no longer reads.
+overrides:
+  jiti: ^2.0.0
+
 # Our own packages are released by us, so they skip pnpm's 24-hour release-age wait;
 # every third-party package keeps it (protection against compromised npm releases).
 minimumReleaseAgeExclude:
   - '@tpzdsp/*'
   - '@agrimetrics/*'
+
