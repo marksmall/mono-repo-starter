@@ -33,7 +33,7 @@
     "test:ci": "vitest run --passWithNoTests",
     "test:coverage": "vitest run --coverage",
     "release": "semantic-release",
-    "quality:ci": "npm run lint && npm run format:check && npm run typecheck && npm run test:ci && npm run build"
+    "quality:ci": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm test:ci && pnpm build"
   },
   "dependencies": {
     "@agrimetrics/agrilib": "^5.2.0",

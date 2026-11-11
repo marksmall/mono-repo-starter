@@ -23,9 +23,10 @@ A Turborepo monorepo containing reusable DSP libraries.
 - **Node and pnpm** at the versions in [`.tool-versions`](.tool-versions), the single
   source of truth: mise or asdf pick them up automatically, and `pnpm run check:versions`
   fails if anything drifts from it (published packages state `engines.node` as `>=` it).
-- **A GitHub token with `read:packages`** in `GITHUB_PACKAGES_TOKEN`, for the private
-  `@agrimetrics/*` packages: the committed [`.npmrc`](.npmrc) reads it from the
-  environment.
+- **A GitHub token with `read:packages`** in your user-level `~/.npmrc`
+  (`//npm.pkg.github.com/:_authToken=<token>`), for the private `@agrimetrics/*`
+  packages. The committed [`.npmrc`](.npmrc) only maps the scope: pnpm 11 won't expand an
+  environment variable in a repo's own `.npmrc`.
 
 ### Installation
 

@@ -23,7 +23,7 @@ This document tracks how `dsp-toolkit` aligns with `mapping-apps-dsp3` to reduce
 - **Added**: `.syncpackrc.json` for version consistency enforcement
   - Enforces workspace protocol for local `@dsp-toolkit/*` packages
   - Prevents accidental version mismatches across packages
-  - Run `npm run syncpack:lint` in CI
+  - Run `pnpm syncpack:lint` in CI
 
 ### 5. **Package.json Field Ordering**
 - **Standardized**: All packages now follow the same field order:
